@@ -142,7 +142,18 @@ async function printCourseReport(courseId){
   }catch(e){alert(e.message||'حدث خطأ أثناء إنشاء التقرير')}
 }
 
-function showCourses(){navigationToken++;hideAll();$('public').classList.remove('hidden');$('q').value='';$('cat').value='';loadCourses()}
+function showCourses(){
+  // In statistics mode, the shared #content container is replaced with the statistics dashboard.
+  // Always repaint the courses list when returning, even if loadCourses() will use a fresh cache.
+  navigationToken++;
+  hideAll();
+  $('public').classList.remove('hidden');
+  $('q').value='';
+  $('cat').value='';
+  if(Array.isArray(courses) && courses.length){fillYears();renderCourses();}
+  else $('content').innerHTML='<div class="empty">جاري تحميل الدورات…</div>';
+  loadCourses();
+}
 function parseTrainingDate(value){
   if(!value)return null;
   if(value instanceof Date&&!isNaN(value))return value;
