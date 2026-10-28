@@ -205,7 +205,7 @@ function toggleStatsDates(){const p=$('statsPeriod')?.value||'all';$('statsMonth
 function toggleStatsCategoryOptions(){const box=$('statsCategoryOptions'),button=$('statsCategoryTrigger');if(!box||!button)return;const open=box.classList.contains('hidden');box.classList.toggle('hidden',!open);button.setAttribute('aria-expanded',String(open))}
 function updateStatsCategoryLabel(){const checks=[...document.querySelectorAll('.stats-cat-check')],selected=checks.filter(x=>x.checked),label=$('statsCategoryLabel');if(!label)return;label.textContent=!selected.length?'لا توجد فئات محددة':selected.length===checks.length?'كل الفئات':selected.length<=2?selected.map(x=>x.value).join('، '):`تم اختيار ${selected.length} فئات`}
 function setAllStatsCategories(checked){document.querySelectorAll('.stats-cat-check').forEach(x=>x.checked=checked);updateStatsCategoryLabel()}
-function saveStatsCategoryFilter(){const box=$('statsCategoryOptions'),button=$('statsCategoryTrigger');if(box)box.classList.add('hidden');if(button)button.setAttribute('aria-expanded','false');applyStatsFilters()}
+function saveStatsCategoryFilter(){updateStatsCategoryLabel();const box=$('statsCategoryOptions'),button=$('statsCategoryTrigger');if(box)box.classList.add('hidden');if(button)button.setAttribute('aria-expanded','false')}
 function resetStatsFilters(){['statsPeriod','statsYear','statsMonth','statsFrom','statsTo'].forEach(id=>{const el=$(id);if(el)el.value=''});if($('statsPeriod'))$('statsPeriod').value='all';setAllStatsCategories(true);toggleStatsDates();applyStatsFilters()}
 function applyStatsFilters(){
   if(!$('statsResults'))return;
@@ -267,6 +267,7 @@ async function saveParticipant(cid,pid){const r=await api({action:'saveParticipa
 async function deleteParticipant(pid,cid){if(!confirm('حذف المشارك؟'))return;const r=await api({action:'deleteParticipant',password:adminPassword,participantId:pid});if(r.success){clearCourseCache();manageParticipants(cid)}else alert(r.message)}
 showCourses();
 </script></body></html>
+
 
 
 
